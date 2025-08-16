@@ -1,6 +1,6 @@
 import { getApiUrl } from "./base"
 
-export interface PreloadedSong {
+export interface PreloadedSongInfo {
   id: number
   songId: string
   title: string
@@ -18,6 +18,8 @@ export interface PreloadedSong {
   error?: string
 }
 
-const getThumbnailUrl = (song: PreloadedSong) => {
+export type PreloadedSongInfoShort = Pick<PreloadedSongInfo, "id" | "songId">
+
+const getThumbnailUrl = (song: PreloadedSongInfo) => {
   return getApiUrl(`thumbnail/${song.songId}`)
 }

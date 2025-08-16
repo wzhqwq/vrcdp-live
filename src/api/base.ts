@@ -6,13 +6,17 @@ export function getApiUrl(path: string): string {
   return `http://127.0.0.1:${apiPort}/${path}`
 }
 
+export function getWsUrl(): string {
+  return `ws://127.0.0.1:${apiPort}/ws`
+}
+
 interface StandardResult<T> {
   ok: boolean
   data?: T
   message?: string
 }
 
-export async function get<T>(path: string) : Promise<T> {
+export async function httpGet<T>(path: string) : Promise<T> {
   const response = await fetch(getApiUrl(path))
   if (!response.ok) {
     throw new Error(`请求失败: ${response.status}`)

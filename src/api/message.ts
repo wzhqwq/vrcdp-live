@@ -1,0 +1,12 @@
+import type { PreloadedSongInfo, PreloadedSongInfoShort } from "./song"
+
+export interface Message {
+  type: string
+  payload: any
+}
+
+export interface PlaylistUpdateMessage {
+  current: PreloadedSongInfoShort[]
+  newSongs: PreloadedSongInfo[]
+  removedSongs: PreloadedSongInfoShort[]
+}
