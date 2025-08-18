@@ -1,9 +1,12 @@
 import { connectionState } from "./connection.svelte"
 import type { Message, PlaylistUpdateMessage } from "./message"
 
+const retryMinInterval = 5000 // 5 seconds
+
 export abstract class WSSession {
-  private readonly url:string
+  private readonly url: string
   private socket?: WebSocket
+  private closed = false
 
   constructor(url: string) {
     this.url = url
@@ -25,20 +28,41 @@ export abstract class WSSession {
           console.warn("Unknown message type:", message.type)
       }
     })
-    this.socket.addEventListener("error", e => {
-      console.error("WebSocket error:", e)
-      connectionState.connected = false
-      connectionState.retrying = true
-      setTimeout(() => {
-        connectionState.retrying = false
-        this.connect()
-      }, 5000) // Retry after 5 seconds
-    })
     this.socket.addEventListener("open", () => {
       console.log("WebSocket connection established")
       connectionState.connected = true
+      connectionState.retrying = false
+    })
+    this.socket.addEventListener("close", () => {
+      console.log("WebSocket connection closed")
+      connectionState.retrying = false
+      this.fail()
     })
   }
+  private lastRetryTime = 0
+
+  fail() {
+    connectionState.connected = false
+    if (!connectionState.retrying && !this.closed) {
+      const now = Date.now()
+      if (now - this.lastRetryTime > retryMinInterval) {
+        this.lastRetryTime = now
+        this.retry()
+      } else {
+        setTimeout(() => {
+          if (!connectionState.connected) {
+            this.fail()
+          }
+        }, retryMinInterval - (now - this.lastRetryTime))
+      }
+    }
+  }
+  retry() {
+    console.log("retry at", new Date().toLocaleTimeString())
+    connectionState.retrying = true
+    this.connect()
+  }
+
   handleNewPlaylist() {
     // implement me
   }
@@ -48,6 +72,7 @@ export abstract class WSSession {
   }
 
   close() {
+    this.closed = true
     this.socket?.close()
   }
 }

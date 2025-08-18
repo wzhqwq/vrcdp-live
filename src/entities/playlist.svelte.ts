@@ -47,4 +47,8 @@ export class Playlist extends WSSession {
   handleNewPlaylist() {
     this.fullUpdate()
   }
+
+  destroy() {
+    this.close()
+  }
 }

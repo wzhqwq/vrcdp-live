@@ -1,13 +1,11 @@
-
-
-let apiPort = 5678
+import { connectionState } from "./connection.svelte"
 
 export function getApiUrl(path: string): string {
-  return `http://127.0.0.1:${apiPort}/${path}`
+  return `http://127.0.0.1:${connectionState.port}/${path}`
 }
 
 export function getWsUrl(): string {
-  return `ws://127.0.0.1:${apiPort}/ws`
+  return `ws://127.0.0.1:${connectionState.port}/ws`
 }
 
 interface StandardResult<T> {

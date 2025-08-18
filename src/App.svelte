@@ -1,31 +1,32 @@
 <script lang="ts">
+  import { connectionState } from "./api/connection.svelte"
   import { checkInLive } from "./api/ua"
+  import Connection from "./components/Connection.svelte"
+  import Playlist from "./components/playlist/Playlist.svelte"
 
-  let available = $state(false)
-  let isLive = $state(false)
-
+  let liveMode = $state(false)
   $effect(() => {
-    checkInLive().then((live) => {
-      isLive = live
-      available = true
-    }).catch(() => {
-      available = false
-    })
+    if (connectionState.connected) {
+      checkInLive().then(live => {
+        liveMode = live
+      })
+    }
   })
 </script>
 
-<main>
-  {#if available}
-    <p>当前直播状态: {isLive ? '直播中' : '未直播'}</p>
-  {:else}
-    <p>无法获取直播状态</p>
-  {/if}
+<main class={{ live: liveMode }}>
+  <Connection />
+  <Playlist />
 </main>
 
-<style>
+<style lang="postcss">
+  @reference "tailwindcss";
   main {
-    padding: 20px;
-    font-size: 16px;
-    color: #333;
+    @apply bg-pink-100 dark:bg-pink-800;
+    width: 100vw;
+    height: 100vh;
+  }
+  main.live {
+    @apply bg-transparent;
   }
 </style>
