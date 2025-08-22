@@ -4,7 +4,7 @@ export interface PreloadedSongInfo {
   id: number
   songId: string
   title: string
-  artist: string
+  adder: string
   group: string
 
   playing: boolean
@@ -18,8 +18,8 @@ export interface PreloadedSongInfo {
   error?: string
 }
 
-export type PreloadedSongInfoShort = Pick<PreloadedSongInfo, "id" | "songId">
+export type PreloadedSongInfoShort = Pick<PreloadedSongInfo, "id">
 
-const getThumbnailUrl = (song: PreloadedSongInfo) => {
+export const getThumbnailUrl = (song: PreloadedSongInfo) => {
   return getApiUrl(`thumbnail/${song.songId}`)
 }

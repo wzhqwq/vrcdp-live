@@ -1,21 +1,29 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 button {
   @apply bg-stone-100 dark:bg-stone-800 text-stone-900 dark:text-stone-100;
-  @apply hover:bg-stone-200 dark:hover:bg-stone-700;
+  @apply border border-stone-200 dark:border-stone-700 hover:bg-stone-200 dark:hover:bg-stone-700;
   @apply focus:ring-2 focus:ring-pink-500 dark:focus:ring-pink-400;
-  @apply focus:outline-none focus:ring-offset-2 focus:ring-offset-pink-200 dark:focus:ring-offset-pink-800;
+  @apply focus:outline-none focus:ring-offset-2 focus:ring-offset-pink-200 dark:focus:ring-offset-pink-900;
   @apply font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center;
   @apply transition-colors duration-200 ease-in-out;
 }
 
-button.btn-primary {
+button.primary {
   @apply bg-pink-600 dark:bg-pink-500 text-white hover:bg-pink-700 dark:hover:bg-pink-400;
-  @apply focus:ring-2 focus:ring-pink-500 dark:focus:ring-pink-400;
-  @apply focus:outline-none focus:ring-offset-2 focus:ring-offset-pink-200 dark:focus:ring-offset-stone-800;
+  @apply border-pink-700 dark:border-pink-400;
 }
 
-input {
+button.option {
+  @apply px-2 py-1 rounded-sm border-0;
+}
+button.option.primary {
+  @apply inset-shadow-sm text-shadow-xs;
+}
+
+input[type=text] {
   @apply bg-stone-100 dark:bg-stone-800 text-stone-900 dark:text-stone-100;
   @apply border border-stone-200 dark:border-stone-700 rounded-lg focus:ring-2 focus:ring-pink-500 dark:focus:ring-pink-400;
   @apply focus:outline-none focus:ring-offset-2 focus:ring-offset-pink-200 dark:focus:ring-offset-stone-800;
@@ -24,6 +32,17 @@ input {
 }
 
 .card {
-  @apply bg-white dark:bg-pink-900 text-stone-900 dark:text-stone-100;
-  @apply p-4 rounded-md;
+  @apply bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100;
+  @apply p-4 rounded-xl shadow-lg;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
 }

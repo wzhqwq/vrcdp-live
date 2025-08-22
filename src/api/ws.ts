@@ -14,6 +14,7 @@ export abstract class WSSession {
   }
 
   connect() {
+    connectionState.connecting = true
     this.socket = new WebSocket(this.url)
     this.socket.addEventListener("message", e => {
       const message = JSON.parse(e.data) as Message
@@ -31,11 +32,11 @@ export abstract class WSSession {
     this.socket.addEventListener("open", () => {
       console.log("WebSocket connection established")
       connectionState.connected = true
-      connectionState.retrying = false
+      connectionState.connecting = false
     })
     this.socket.addEventListener("close", () => {
       console.log("WebSocket connection closed")
-      connectionState.retrying = false
+      connectionState.connecting = false
       this.fail()
     })
   }
@@ -43,7 +44,7 @@ export abstract class WSSession {
 
   fail() {
     connectionState.connected = false
-    if (!connectionState.retrying && !this.closed) {
+    if (!connectionState.connecting && !this.closed) {
       const now = Date.now()
       if (now - this.lastRetryTime > retryMinInterval) {
         this.lastRetryTime = now
@@ -59,7 +60,6 @@ export abstract class WSSession {
   }
   retry() {
     console.log("retry at", new Date().toLocaleTimeString())
-    connectionState.retrying = true
     this.connect()
   }
 

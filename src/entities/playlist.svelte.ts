@@ -11,6 +11,7 @@ export class Playlist extends WSSession {
 
   constructor() {
     super(getWsUrl())
+    this.fullUpdate()
   }
 
   async fullUpdate() {
@@ -42,6 +43,11 @@ export class Playlist extends WSSession {
     }
     // update current songs
     this.current = current.map(song => this.activeSongs.get(song.id)!)
+    setTimeout(() => {
+      if (this.current.length > 0) {
+        this.current[0].expanded = true
+      }
+    }, 500);
   }
 
   handleNewPlaylist() {
