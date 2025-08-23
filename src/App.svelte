@@ -28,7 +28,7 @@
     <Connection />
     <div class={["flex h-full gap-2", { "justify-center": !liveMode }]}>
       {#if !liveMode}
-        <div class="flex flex-col gap-2">
+        <div class="flex flex-col gap-2 shrink-0">
           <Settings />
           {#if connectionState.connected}
             <div

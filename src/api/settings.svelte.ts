@@ -4,6 +4,7 @@ export interface SettingsDict {
   attached: boolean
   padded: boolean
   collapsed: "always" | "never" | "auto"
+  titleMarquee: boolean
 }
 
 export let settings = $state({
@@ -12,4 +13,5 @@ export let settings = $state({
   attached: true,
   padded: true,
   collapsed: "auto",
+  titleMarquee: true,
 } as SettingsDict)

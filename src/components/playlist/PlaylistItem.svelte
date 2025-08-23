@@ -3,6 +3,7 @@
   import { settings } from "../../api/settings.svelte"
   import type { PreloadedSong } from "../../entities/song.svelte"
   import Thumbnail from "../song/Thumbnail.svelte"
+  import Title from "../song/Title.svelte"
 
   interface PlaylistItemProps {
     song: PreloadedSong
@@ -38,18 +39,23 @@
   <div
     class={[
       "flex-1 flex flex-col justify-evenly bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100",
-      "transition-[border-radius,padding] duration-300 min-w-48",
-      collapsed ? "px-1" : "px-2",
+      "transition-[border-radius,padding] duration-300 min-w-48 px-2",
       cornerClass,
     ]}
   >
-    <p class={["transition-[font-size] duration-300 overflow-hidden", collapsed ? "text-sm" : "text-lg"]}>
-      <span class="text-nowrap">{song.info.title}</span>
-    </p>
+    <div class={["transition-[font-size] duration-300", collapsed ? "text-sm" : "text-lg"]}>
+      {#if settings.titleMarquee}
+        <Title title={song.info.title} />
+      {:else}
+        <div class="text-nowrap overflow-hidden text-ellipsis w-full">{song.info.title}</div>
+      {/if}
+    </div>
     {#if !collapsed}
       <div class="text-xs pb-1" transition:slide={{ duration: 300 }}>
         <p class="flex gap-1">
-          <span class="text-stone-500 dark:text-stone-300 overflow-hidden text-ellipsis text-nowrap">{song.info.group}</span>
+          <span class="text-stone-500 dark:text-stone-300 overflow-hidden text-ellipsis text-nowrap"
+            >{song.info.group}</span
+          >
           <span class="text-stone-400 shrink-0">{song.info.songId}</span>
         </p>
         <p class="">
