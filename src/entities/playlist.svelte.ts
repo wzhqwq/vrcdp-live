@@ -45,7 +45,10 @@ export class Playlist extends WSSession {
     this.current = current.map(song => this.activeSongs.get(song.id)!)
     setTimeout(() => {
       if (this.current.length > 0) {
-        this.current[0].expanded = true
+        this.current[0].setPlaying()
+        this.current.slice(1).forEach((song, index) => {
+          song.setETA(this.current.slice(0, index + 1).reduce((a, b) => a + b.info.duration, 0))
+        })
       }
     }, 500);
   }

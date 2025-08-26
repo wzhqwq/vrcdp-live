@@ -8,9 +8,14 @@
     src: string
     collapsed: boolean
     downloadProgress: number
+    thumbnailLoaded?: boolean
   }
-  let { src, collapsed, downloadProgress }: ThumbnailProps = $props()
-  let thumbnailLoaded = $state<boolean>(false)
+  let {
+    src,
+    collapsed,
+    thumbnailLoaded = $bindable(false),
+    downloadProgress,
+  }: ThumbnailProps = $props()
   let progressText = $derived(downloadProgress.toFixed())
 
   $effect(() => {
@@ -20,7 +25,7 @@
   })
 
   let width = $derived(thumbnailLoaded ? "96px" : "6px")
-  let height = $derived(collapsed ? "30px" : "72px")
+  let height = $derived(collapsed ? "30px" : "54px")
   let cornerClass = $derived(
     collapsed ? (settings.side == "left" ? "rounded-r-md" : "rounded-l-md") : "rounded-md"
   )
