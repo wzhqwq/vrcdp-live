@@ -64,7 +64,7 @@
   </div>
   <div
     class={[
-      "flex-1 flex flex-col justify-evenly bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100",
+      "flex-1 flex flex-col justify-evenly bg-white dark:bg-stone-800",
       "transition-[border-radius,padding] duration-300 min-w-48 px-2",
       cornerClass,
     ]}

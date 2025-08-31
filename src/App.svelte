@@ -21,7 +21,7 @@
 <main class={settings.theme}>
   <div
     class={[
-      "bg-stone-200 dark:bg-stone-950 transition-colors duration-500 w-dvw h-dvh",
+      "bg-stone-200 dark:bg-stone-950 text-stone-900 dark:text-stone-100 transition-colors duration-500 w-dvw h-dvh",
       { "bg-transparent": liveMode },
     ]}
   >
@@ -32,7 +32,7 @@
           <Settings />
           {#if connectionState.connected}
             <div
-              class="bg-white dark:bg-stone-800 dark:text-white rounded-full flex items-center text-sm p-1 pl-2 self-end"
+              class="bg-white dark:bg-stone-800 rounded-full flex items-center text-sm p-1 pl-2 self-end"
             >
               预览效果
               <Icon src={FiArrowRight} size="16" />
