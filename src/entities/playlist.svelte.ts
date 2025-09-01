@@ -1,7 +1,6 @@
 import { getWsUrl } from "../api/base"
-import type { PlaylistUpdateMessage } from "../api/message"
+import type { PlaylistUpdateMessage, SongUpdateMessage } from "../api/message"
 import { getFullPlaylist } from "../api/playlist"
-import type { PreloadedSongInfo } from "../api/song"
 import { WSSession } from "../api/ws"
 import { PreloadedSong } from "./song.svelte"
 
@@ -43,18 +42,30 @@ export class Playlist extends WSSession {
     }
     // update current songs
     this.current = current.map(song => this.activeSongs.get(song.id)!)
-    setTimeout(() => {
-      if (this.current.length > 0) {
-        this.current[0].setPlaying()
-        this.current.slice(1).forEach((song, index) => {
-          song.setETA(this.current.slice(0, index + 1).reduce((a, b) => a + b.info.duration, 0))
-        })
+
+    if (this.current.length > 0) {
+      this.current[0].setOnSongEnded(() => {
+        this.current[1]?.setUpcoming()
+      })
+      if (this.current[0].info.playStatus !== "queued") {
+        let eta = this.current[0].secondsToEnd()
+        for (let i = 1; i < this.current.length; i++) {
+          this.current[i].setETA(eta)
+          eta += this.current[i].info.duration
+        }
       }
-    }, 500);
+    }
   }
 
   handleNewPlaylist() {
     this.fullUpdate()
+  }
+
+  handleSongUpdate(message: SongUpdateMessage): void {
+    const song = this.activeSongs.get(message.id)
+    if (song) {
+      song.syncInfo(message)
+    }
   }
 
   destroy() {

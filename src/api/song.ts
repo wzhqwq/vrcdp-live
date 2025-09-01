@@ -7,14 +7,13 @@ export interface PreloadedSongInfo {
   adder: string
   group: string
 
-  playing: boolean
-  downloading: boolean
-  statusText: string
+  downloadStatus: "initial" | "requesting" | "pending" | "downloading" | "downloaded" | "failed"
+  playStatus: "queued" | "playing" | "ended"
 
   duration: number
   timePassed: number
 
-  downloadProgress: number
+  downloadProgress?: number
   error?: string
 }
 

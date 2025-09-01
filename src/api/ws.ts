@@ -1,5 +1,5 @@
 import { connectionState } from "./connection.svelte"
-import type { Message, PlaylistUpdateMessage } from "./message"
+import type { Message, PlaylistUpdateMessage, SongUpdateMessage } from "./message"
 
 const retryMinInterval = 5000 // 5 seconds
 
@@ -24,6 +24,9 @@ export abstract class WSSession {
           break
         case "PL_NEW":
           this.handleNewPlaylist()
+          break
+        case "SONG_UPDATE":
+          this.handleSongUpdate(message.payload as SongUpdateMessage)
           break
         default:
           console.warn("Unknown message type:", message.type)
@@ -68,6 +71,10 @@ export abstract class WSSession {
   }
 
   handlePlaylistUpdate(message: PlaylistUpdateMessage) {
+    // implement me
+  }
+
+  handleSongUpdate(message: SongUpdateMessage) {
     // implement me
   }
 

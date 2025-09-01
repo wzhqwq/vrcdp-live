@@ -10,3 +10,11 @@ export interface PlaylistUpdateMessage {
   newSongs: PreloadedSongInfo[]
   removedSongs: PreloadedSongInfoShort[]
 }
+
+export type SongUpdateMessage = Pick<PreloadedSongInfo, "id"> &
+  Partial<
+    Pick<
+      PreloadedSongInfo,
+      "playStatus" | "timePassed" | "downloadProgress" | "downloadStatus" | "error"
+    >
+  >
