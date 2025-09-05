@@ -30,6 +30,8 @@ export abstract class WSSession {
 
   connect() {
     connectionState.connecting = true
+
+    this.connectionCount = 0
     this.socket = new WebSocket(this.url)
     this.socket.addEventListener("message", e => {
       const message = JSON.parse(e.data) as Message
@@ -51,6 +53,9 @@ export abstract class WSSession {
       }
     })
     this.socket.addEventListener("open", () => {
+      this.connectionCount++
+      if (this.connectionCount > 1) return
+
       console.log("WebSocket connection established")
 
       connectionState.connected = true
@@ -77,6 +82,10 @@ export abstract class WSSession {
       })
     })
     this.socket.addEventListener("close", () => {
+      this.connectionCount--
+      if (this.connectionCount > 0) return
+
+      this.settingsUnsubscribe?.()
       this.settingsUnsubscribe = undefined
 
       console.log("WebSocket connection closed")
