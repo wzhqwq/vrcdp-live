@@ -10,18 +10,19 @@ export class Playlist extends WSSession {
 
   constructor() {
     super(getWsUrl())
-    this.fullUpdate()
   }
 
   async fullUpdate() {
     const songs = await getFullPlaylist()
     this.activeSongs.forEach(song => song.removeFromList())
     this.activeSongs.clear()
-    this.current = songs.map(song => {
-      const preloadedSong = new PreloadedSong(song)
-      this.activeSongs.set(preloadedSong.info.id, preloadedSong)
-      return preloadedSong
-    })
+    this.updateCurrent(
+      songs.map(song => {
+        const preloadedSong = new PreloadedSong(song)
+        this.activeSongs.set(preloadedSong.info.id, preloadedSong)
+        return preloadedSong
+      })
+    )
   }
 
   handlePlaylistUpdate(message: PlaylistUpdateMessage) {
@@ -41,14 +42,17 @@ export class Playlist extends WSSession {
       return
     }
     // update current songs
-    this.current = current.map(song => this.activeSongs.get(song.id)!)
+    this.updateCurrent(current.map(song => this.activeSongs.get(song.id)!))
+  }
 
+  updateCurrent(songs: PreloadedSong[]) {
+    this.current = songs
     if (this.current.length > 0) {
       this.current[0].setOnSongEnded(() => {
         this.current[1]?.setUpcoming()
       })
       if (this.current[0].info.playStatus !== "queued") {
-        let eta = this.current[0].secondsToEnd()
+        let eta = this.current[0].msToEnd()
         for (let i = 1; i < this.current.length; i++) {
           this.current[i].setETA(eta)
           eta += this.current[i].info.duration
@@ -66,6 +70,10 @@ export class Playlist extends WSSession {
     if (song) {
       song.syncInfo(message)
     }
+  }
+
+  handleConnected(): void {
+    this.fullUpdate()
   }
 
   destroy() {

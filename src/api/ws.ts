@@ -60,6 +60,8 @@ export abstract class WSSession {
 
       connectionState.connected = true
       connectionState.connecting = false
+      this.handleConnected()
+
       this.settingsUnsubscribe = settings.subscribe(newSettings => {
         if (!this.settingsOnServer || this.isSyncingFromServer) {
           return
@@ -125,6 +127,10 @@ export abstract class WSSession {
   }
 
   handleSongUpdate(message: SongUpdateMessage) {
+    // implement me
+  }
+
+  handleConnected() {
     // implement me
   }
 

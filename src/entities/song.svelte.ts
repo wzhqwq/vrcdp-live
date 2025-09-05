@@ -1,12 +1,14 @@
 import { getThumbnailUrl, type PreloadedSongInfo } from "../api/song"
 
-
 export class PreloadedSong {
-  visualState = $state<"created" | "entering" | "idle" | "playing" | "exiting" | "exited">("created")
+  visualState = $state<"created" | "entering" | "idle" | "playing" | "exiting" | "exited">(
+    "created"
+  )
   expanded = $state<boolean>(false)
   downloadProgress = $state<number>(0)
   playing = $state<boolean>(false)
   label = $state<string>("")
+  labelClass = $state<string>("bg-stone-100 dark:bg-stone-700")
   startingTime = $state<number>(0)
 
   onSongEnded?: () => void
@@ -28,13 +30,12 @@ export class PreloadedSong {
       }
     }
     if (!keys || keys.includes("downloadProgress") || keys.includes("downloadStatus")) {
-      this.downloadProgress = this.info.downloadProgress ?? (this.info.downloadStatus === "downloaded" ? 100 : 0)
+      this.downloadProgress =
+        this.info.downloadStatus === "downloaded" ? 100 : this.info.downloadProgress ?? 0
     }
   }
 
-  public removeFromList() {
-
-  }
+  public removeFromList() {}
 
   public syncInfo(info: Partial<PreloadedSongInfo>) {
     this.info = { ...this.info, ...info }
@@ -49,22 +50,28 @@ export class PreloadedSong {
     this.playing = true
     this.expanded = true
     this.label = "正在播放"
+    this.labelClass = "bg-pink-100 dark:bg-pink-900 text-pink-700 dark:text-pink-300"
   }
 
   public setEnded() {
     this.playing = false
     this.label = "结束力"
+    this.labelClass = "bg-stone-100 dark:bg-stone-700 text-stone-600 dark:text-stone-400"
     this.onSongEnded?.()
   }
 
   public setUpcoming() {
     this.expanded = true
     this.label = "即将播放"
+    this.labelClass = "bg-sky-100 dark:bg-sky-900 text-sky-700 dark:text-sky-300 animate-pulse"
   }
 
   public setETA(eta: number) {
-    const time = new Date(Date.now() + eta * 1000)
-    this.label = `预计 ${time.getHours().toString().padStart(2, "0")}:${time.getMinutes().toString().padStart(2, "0")} 播放`
+    const time = new Date(Date.now() + eta)
+    const hours = time.getHours().toString().padStart(2, "0")
+    const minutes = time.getMinutes().toString().padStart(2, "0")
+    this.label = `预计 ${hours}:${minutes} 播放`
+    this.labelClass = "bg-stone-100 dark:bg-stone-700"
   }
 
   public setOnSongEnded(callback: () => void) {
@@ -74,7 +81,11 @@ export class PreloadedSong {
     }
   }
 
-  public secondsToEnd() {
-    return Math.max(0, this.info.duration - (this.info.timePassed ?? 0))
+  get timePassed() {
+    return this.info.playStatus == "queued" ? 0 : Date.now() - this.startingTime
+  }
+
+  public msToEnd() {
+    return Math.max(0, this.info.duration - this.timePassed)
   }
 }

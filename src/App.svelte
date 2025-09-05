@@ -21,8 +21,8 @@
 <main class={$settings.theme}>
   <div
     class={[
-      "bg-stone-200 dark:bg-stone-950 text-stone-900 dark:text-stone-100 transition-colors duration-500 w-dvw h-dvh",
-      { "bg-transparent": liveMode },
+      "text-stone-900 dark:text-stone-100 transition-colors duration-300 w-dvw h-dvh",
+      liveMode ? "bg-transparent" : "bg-stone-200 dark:bg-stone-950",
     ]}
   >
     <Connection />
@@ -42,7 +42,9 @@
       {/if}
       <div
         class={[
-          liveMode ? "w-full" : "relative overflow-hidden w-96 border-stone-300 dark:border-stone-700",
+          liveMode
+            ? "w-full"
+            : "relative overflow-hidden w-96 border-stone-300 dark:border-stone-700",
           liveMode ? "" : $settings.side == "left" ? "border-l" : "border-r",
         ]}
       >

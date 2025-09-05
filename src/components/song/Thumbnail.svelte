@@ -50,17 +50,17 @@
     />
   {/if}
   {#if thumbnailLoaded}
-    <div
-      class="absolute bottom-0 w-full bg-black/50"
-      style:height={(100 - downloadProgress).toFixed(1) + "%"}
-      transition:fade={{ duration: 300 }}
-    ></div>
-    <div
-      class="absolute w-full bg-white/80 shadow-[0_0_4px_1px_#fff8] h-[1px]"
-      style:top={downloadProgress.toFixed(1) + "%"}
-      transition:fade={{ duration: 300 }}
-    ></div>
     {#if progressText != "100"}
+      <div
+        class="absolute bottom-0 w-full bg-black/50 transition-[height] duration-300"
+        style:height={(100 - downloadProgress).toFixed(1) + "%"}
+        transition:fade={{ duration: 300 }}
+      ></div>
+      <div
+        class="absolute w-full bg-white/80 shadow-[0_0_4px_1px_#fff8] h-[1px] transition-[top] duration-300"
+        style:top={downloadProgress.toFixed(1) + "%"}
+        transition:fade={{ duration: 300 }}
+      ></div>
       <div
         class="absolute left-0.5 bottom-0.5 bg-stone-800 text-white rounded-sm flex items-center"
       >
@@ -76,7 +76,7 @@
       transition:fade={{ duration: 300 }}
     >
       <div
-        class="absolute top-0 w-full bg-pink-600"
+        class="absolute top-0 w-full bg-pink-600 transition-[height] duration-300"
         style:height={downloadProgress.toFixed(1) + "%"}
       ></div>
     </div>
