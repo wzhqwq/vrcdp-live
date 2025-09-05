@@ -14,10 +14,10 @@
     }
   })
 
-  var flyParams = $derived({ duration: 300, x: settings.side == "right" ? "100%" : "-100%" })
+  var flyParams = $derived({ duration: 300, x: $settings.side == "right" ? "100%" : "-100%" })
 </script>
 
-<div class={["p-1", settings.attached ? (settings.side == "left" ? "pl-0" : "pr-0") : ""]}>
+<div class={["p-1", $settings.attached ? ($settings.side == "left" ? "pl-0" : "pr-0") : ""]}>
   {#if currentPlaylist}
     <div class="flex flex-col gap-2">
       {#each currentPlaylist.current as song (song.info.id)}

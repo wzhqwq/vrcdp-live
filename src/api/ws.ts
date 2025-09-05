@@ -1,5 +1,6 @@
 import { connectionState } from "./connection.svelte"
 import type { Message, PlaylistUpdateMessage, SongUpdateMessage } from "./message"
+import { fetchSettings, settings, type SettingsDict } from "./settings.svelte"
 
 const retryMinInterval = 5000 // 5 seconds
 
@@ -8,9 +9,23 @@ export abstract class WSSession {
   private socket?: WebSocket
   private closed = false
 
+  private settingsOnServer?: SettingsDict
+  private settingsUnsubscribe?: () => void
+  private isSyncingFromServer = false
+  private connectionCount = 0
+
   constructor(url: string) {
     this.url = url
     this.connect()
+  }
+
+  syncSettingsFromServer() {
+    if (!this.settingsOnServer) {
+      return
+    }
+    this.isSyncingFromServer = true
+    settings.update(s => ({ ...s, ...this.settingsOnServer }))
+    this.isSyncingFromServer = false
   }
 
   connect() {
@@ -28,16 +43,42 @@ export abstract class WSSession {
         case "SONG_UPDATE":
           this.handleSongUpdate(message.payload as SongUpdateMessage)
           break
+        case "SETTINGS":
+          this.settingsOnServer = JSON.parse(message.payload)
+          this.syncSettingsFromServer()
         default:
           console.warn("Unknown message type:", message.type)
       }
     })
     this.socket.addEventListener("open", () => {
       console.log("WebSocket connection established")
+
       connectionState.connected = true
       connectionState.connecting = false
+      this.settingsUnsubscribe = settings.subscribe(newSettings => {
+        if (!this.settingsOnServer || this.isSyncingFromServer) {
+          return
+        }
+        const keys = Object.keys(newSettings) as (keyof SettingsDict)[]
+        if (this.socket && keys.some(key => newSettings[key] !== this.settingsOnServer?.[key])) {
+          const payload = JSON.stringify(newSettings)
+          this.socket.send(
+            JSON.stringify({
+              type: "SETTINGS",
+              payload,
+            })
+          )
+          this.settingsOnServer = JSON.parse(payload)
+        }
+      })
+      fetchSettings().then(settings => {
+        this.settingsOnServer = settings
+        this.syncSettingsFromServer()
+      })
     })
     this.socket.addEventListener("close", () => {
+      this.settingsUnsubscribe = undefined
+
       console.log("WebSocket connection closed")
       connectionState.connecting = false
       this.fail()

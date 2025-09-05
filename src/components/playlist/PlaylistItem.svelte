@@ -13,17 +13,17 @@
   let thumbnailLoaded = $state(false)
 
   let collapsed = $derived.by(() => {
-    if (settings.collapsed == "never") return false
-    if (settings.collapsed == "always") return true
+    if ($settings.collapsed == "never") return false
+    if ($settings.collapsed == "always") return true
     return !song.expanded
   })
   let cornerClass = $derived(
     collapsed
-      ? settings.attached
+      ? $settings.attached
         ? ""
         : "rounded-r-md"
-      : settings.attached
-        ? settings.side == "left"
+      : $settings.attached
+        ? $settings.side == "left"
           ? "rounded-r-md"
           : "rounded-l-md"
         : "rounded-lg"
@@ -33,7 +33,7 @@
 <div
   class={[
     "flex transition-[gap] duration-300",
-    { "flex-row-reverse": settings.side == "left" },
+    { "flex-row-reverse": $settings.side == "left" },
     collapsed ? "gap-0" : "gap-1",
   ]}
 >
@@ -69,13 +69,8 @@
       cornerClass,
     ]}
   >
-    <div
-      class={[
-        "transition-[font-size] duration-300",
-        collapsed ? "text-sm" : "text-lg",
-      ]}
-    >
-      {#if settings.titleMarquee}
+    <div class={["transition-[font-size] duration-300", collapsed ? "text-sm" : "text-lg"]}>
+      {#if $settings.titleMarquee}
         <Title title={song.info.title} />
       {:else}
         <div class="text-nowrap overflow-hidden text-ellipsis w-full">{song.info.title}</div>

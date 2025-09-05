@@ -27,7 +27,7 @@
   let width = $derived(thumbnailLoaded ? "96px" : "6px")
   let height = $derived(collapsed ? "30px" : "54px")
   let cornerClass = $derived(
-    collapsed ? (settings.side == "left" ? "rounded-r-md" : "rounded-l-md") : "rounded-md"
+    collapsed ? ($settings.side == "left" ? "rounded-r-md" : "rounded-l-md") : "rounded-md"
   )
 </script>
 

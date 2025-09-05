@@ -18,7 +18,7 @@
   })
 </script>
 
-<main class={settings.theme}>
+<main class={$settings.theme}>
   <div
     class={[
       "bg-stone-200 dark:bg-stone-950 text-stone-900 dark:text-stone-100 transition-colors duration-500 w-dvw h-dvh",
@@ -43,7 +43,7 @@
       <div
         class={[
           liveMode ? "w-full" : "relative overflow-hidden w-96 border-stone-300 dark:border-stone-700",
-          liveMode ? "" : settings.side == "left" ? "border-l" : "border-r",
+          liveMode ? "" : $settings.side == "left" ? "border-l" : "border-r",
         ]}
       >
         <Playlist />
