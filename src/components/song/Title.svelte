@@ -7,7 +7,7 @@
 
   const handleResize = (entry: ResizeObserverEntry) => {
     const container = entry.target as HTMLElement
-    const text = container.querySelector("div.text-nowrap")
+    const text = container.querySelector("div.whitespace-nowrap")
     if (!text) return
 
     useMarquee = text.scrollWidth > container.clientWidth
@@ -26,11 +26,11 @@
   ></div>
   {#if useMarquee}
     <div class="pl-1.5 flex gap-8">
-      <div class="text-nowrap marquee">{title}</div>
-      <div class="text-nowrap marquee">{title}</div>
+      <div class="whitespace-nowrap marquee">{title}</div>
+      <div class="whitespace-nowrap marquee">{title}</div>
     </div>
   {:else}
-    <div class="pl-1.5 text-nowrap">{title}</div>
+    <div class="pl-1.5 whitespace-nowrap">{title}</div>
   {/if}
 </div>
 
