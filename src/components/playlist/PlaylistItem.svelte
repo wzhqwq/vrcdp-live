@@ -41,8 +41,8 @@
   {#if song.label != ""}
     <div
       class={[
-        "transition-[margin,background-color,color] duration-300 origin-top-left absolute z-20 h-4 text-xs px-1 rounded-full shadow text-nowrap text-center",
-        thumbnailLoaded ? "w-[96px] mt-0 ml-0" : "-mt-1.5 ml-0.5 scale-80",
+        "transition-[margin,background-color,color] duration-300 origin-top-left absolute z-20 h-4 text-label px-1 rounded-full shadow text-nowrap text-center",
+        thumbnailLoaded ? "w-(--thumb-width) mt-0 ml-0" : "-mt-1.5 ml-0.5 scale-80",
         song.labelClass,
       ]}
       transition:fade={{ duration: 300 }}
@@ -71,7 +71,9 @@
       cornerClass,
     ]}
   >
-    <div class={["transition-[font-size] duration-300", collapsed ? "text-sm" : "text-lg"]}>
+    <div
+      class={["transition-[font-size] duration-300", collapsed ? "text-subtitle" : "text-title"]}
+    >
       {#if $settings.titleMarquee}
         <Title title={song.info.title} />
       {:else}
@@ -79,7 +81,7 @@
       {/if}
     </div>
     {#if !collapsed}
-      <div class="text-xs" transition:slide={{ duration: 300 }}>
+      <div class="text-label" transition:slide={{ duration: 300 }}>
         {#if song.playing}
           <div class="-mx-2" transition:slide={{ duration: 300 }}>
             <PlayProgress {song} />

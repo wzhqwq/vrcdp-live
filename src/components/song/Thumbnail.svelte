@@ -24,8 +24,6 @@
     }
   })
 
-  let width = $derived(thumbnailLoaded ? "96px" : "6px")
-  let height = $derived(collapsed ? "30px" : "54px")
   let cornerClass = $derived(
     collapsed ? ($settings.side == "left" ? "rounded-r-md" : "rounded-l-md") : "rounded-md"
   )
@@ -35,9 +33,9 @@
   class={[
     "relative transition-[height,width,border-radius] duration-300 overflow-hidden",
     cornerClass,
+    thumbnailLoaded ? "w-(--thumb-width)" : "w-(--thumb-collapsed-width)",
+    collapsed ? "h-(--thumb-collapsed-height)" : "h-(--thumb-height)"
   ]}
-  style:width
-  style:height
 >
   {#if !collapsed}
     <img
@@ -65,7 +63,7 @@
         class="absolute left-0.5 bottom-0.5 bg-stone-800 text-white rounded-sm flex items-center"
       >
         <Icon src={FiArrowDown} size="14" />
-        <span class="-ml-0.5 w-5 text-center text-xs">
+        <span class="-ml-0.5 w-5 text-center text-label">
           {progressText}
         </span>
       </div>

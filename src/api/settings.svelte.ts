@@ -7,6 +7,7 @@ export interface SettingsDict {
   attached: boolean
   collapsed: "always" | "never" | "auto"
   titleMarquee: boolean
+  scale: number
 }
 
 const defaultSettings:SettingsDict = {
@@ -15,6 +16,7 @@ const defaultSettings:SettingsDict = {
   attached: true,
   collapsed: "auto",
   titleMarquee: true,
+  scale: 1
 }
 
 export const settings = writable<SettingsDict>(defaultSettings)

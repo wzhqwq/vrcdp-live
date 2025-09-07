@@ -28,7 +28,7 @@
     <Connection />
     <div class={["flex h-full gap-2", { "justify-center": !liveMode }]}>
       {#if !liveMode}
-        <div class="flex flex-col gap-2 shrink-0">
+        <div class="flex flex-col gap-4 shrink-0 pt-2">
           <Settings />
           {#if connectionState.connected}
             <div
@@ -42,6 +42,7 @@
       {/if}
       <div
         class={[
+          "scale-level-" + $settings.scale,
           liveMode
             ? "w-full"
             : "relative overflow-hidden w-96 border-stone-300 dark:border-stone-700",
