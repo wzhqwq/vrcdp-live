@@ -1,15 +1,15 @@
 import { getThumbnailUrl, type PreloadedSongInfo } from "../api/song"
 
 export class PreloadedSong {
-  visualState = $state<"created" | "entering" | "idle" | "playing" | "exiting" | "exited">(
-    "created"
-  )
   expanded = $state<boolean>(false)
   downloadProgress = $state<number>(0)
   playing = $state<boolean>(false)
   label = $state<string>("")
   labelClass = $state<string>("bg-stone-100 dark:bg-stone-700")
   startingTime = $state<number>(0)
+
+  title = $state<string>("")
+  group = $state<string>("")
 
   onSongEnded?: () => void
 
@@ -32,6 +32,12 @@ export class PreloadedSong {
     if (!keys || keys.includes("downloadProgress") || keys.includes("downloadStatus")) {
       this.downloadProgress =
         this.info.downloadStatus === "downloaded" ? 100 : this.info.downloadProgress ?? 0
+    }
+    if (!keys || keys.includes("title")) {
+      this.title = this.info.title
+    }
+    if (!keys || keys.includes("group")) {
+      this.group = this.info.group
     }
   }
 

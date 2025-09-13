@@ -75,9 +75,9 @@
       class={["transition-[font-size] duration-300", collapsed ? "text-subtitle" : "text-title"]}
     >
       {#if $settings.titleMarquee}
-        <Title title={song.info.title} />
+        <Title title={song.title} />
       {:else}
-        <div class="text-nowrap overflow-hidden text-ellipsis w-full">{song.info.title}</div>
+        <div class="text-nowrap overflow-hidden text-ellipsis w-full">{song.title}</div>
       {/if}
     </div>
     {#if !collapsed}
@@ -91,7 +91,7 @@
           <span
             class="text-stone-500 dark:text-stone-300 overflow-hidden text-ellipsis text-nowrap"
           >
-            {song.info.group}
+            {song.group}
           </span>
           <span class="text-stone-400 shrink-0">{song.info.songId}</span>
         </p>
