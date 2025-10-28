@@ -106,8 +106,8 @@ input[type="range"]::-webkit-slider-runnable-track {
   --text-subtitle: calc(var(--text-sm) * 0.9);
   --text-title: calc(var(--text-lg) * 0.9);
   --spacing: calc(0.25rem * 0.9);
-  --thumb-width: 96px;
-  --thumb-height: 54px;
+  --thumb-width: 80px;
+  --thumb-height: 45px;
   --thumb-collapsed-width: 5px;
   --thumb-collapsed-height: 27px;
 }

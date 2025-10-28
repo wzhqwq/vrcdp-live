@@ -1,10 +1,11 @@
 
 export interface DetachOptions {
   detached: boolean
+  setHeight?: (height: number) => void
 }
 
-export function detach(node: HTMLElement, { detached }: DetachOptions) {
-  function update({ detached }: DetachOptions) {
+export function detach(node: HTMLElement, { detached, setHeight }: DetachOptions) {
+  function update({ detached, setHeight }: DetachOptions) {
     if (detached) {
       const box = node.getBoundingClientRect()
       node.style.position = 'fixed'
@@ -13,6 +14,7 @@ export function detach(node: HTMLElement, { detached }: DetachOptions) {
       node.style.width = `${box.width}px`
       node.style.height = `${box.height}px`
       node.style.zIndex = '9999'
+      setHeight?.(box.height)
     } else {
       node.style.position = ''
       node.style.left = ''
@@ -23,7 +25,7 @@ export function detach(node: HTMLElement, { detached }: DetachOptions) {
     }
   }
 
-  update({ detached })
+  update({ detached, setHeight })
 
   return {
     update(params: DetachOptions) {

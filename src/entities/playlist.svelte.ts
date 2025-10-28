@@ -57,6 +57,8 @@ export class Playlist extends WSSession {
           this.current[i].setETA(eta)
           eta += this.current[i].info.duration
         }
+      } else {
+        this.current[0].setUpcoming()
       }
     }
   }
