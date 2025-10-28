@@ -7,6 +7,7 @@
   import PlaylistView from "./components/playlist/PlaylistView.svelte"
   import Settings from "./components/settings/Settings.svelte"
   import { FiArrowRight } from "svelte-icons-pack/fi"
+  import { resize } from "./actions/resize"
   import { Playlist } from "./entities/playlist.svelte"
 
   const opacityClasses = ["opacity-30", "opacity-50", "opacity-75", "opacity-100"]
@@ -29,6 +30,12 @@
     }
   })
 
+  let viewportHeight = $state(0)
+  const handleResize = (entry: ResizeObserverEntry) => {
+    const container = entry.target as HTMLElement
+    viewportHeight = container.clientHeight
+  }
+  $inspect(viewportHeight)
 </script>
 
 <main class={$settings.theme}>
@@ -65,7 +72,7 @@
           ]}
           use:resize={{ callback: handleResize, throttle: 300 }}
         >
-          <PlaylistView playlist={currentPlaylist} />
+          <PlaylistView {viewportHeight} playlist={currentPlaylist} />
         </div>
       {/if}
     </div>

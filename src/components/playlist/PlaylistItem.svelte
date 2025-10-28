@@ -8,8 +8,9 @@
 
   interface PlaylistItemProps {
     song: PreloadedSong
+    halfVisible: boolean
   }
-  let { song }: PlaylistItemProps = $props()
+  let { song, halfVisible }: PlaylistItemProps = $props()
 
   let thumbnailLoaded = $state(false)
 
@@ -33,9 +34,10 @@
 
 <div
   class={[
-    "flex transition-[gap] duration-300",
+    "flex transition-[gap,transform,margin,opacity] duration-300",
     { "flex-row-reverse": $settings.side == "left" },
     collapsed ? "gap-0" : "gap-1",
+    halfVisible ? "opacity-70 -translate-y-full " + ($settings.attached ? "ml-2" : "mx-2") : "",
   ]}
 >
   {#if song.label != ""}
@@ -52,8 +54,8 @@
   {/if}
   <div
     class={[
-      "transition-[padding-top] duration-300 pt-0",
-      !collapsed && song.label != "" ? (thumbnailLoaded ? "pt-5" : "pt-3") : "pt-0",
+      "transition-[padding] duration-300",
+      collapsed ? "" : song.label != "" ? (thumbnailLoaded ? "pt-5" : "pt-3") : "py-2.5",
     ]}
     transition:slide={{ duration: 300 }}
   >

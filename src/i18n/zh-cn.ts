@@ -14,6 +14,7 @@ export default {
   collapsed: "折叠以节省空间",
   attached: "贴合边缘",
   titleMarquee: "标题溢出时跑马灯",
+  hideOverflowItems: "隐藏或堆叠溢出歌曲",
   scale: "UI大小",
   scaleOptions: {
     0: "极小",

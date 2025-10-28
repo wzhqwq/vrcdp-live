@@ -4,9 +4,12 @@ import { httpGet } from "./base"
 export interface SettingsDict {
   theme: "light" | "dark"
   side: "left" | "right"
-  attached: boolean
   collapsed: "always" | "never" | "auto"
+
+  attached: boolean
   titleMarquee: boolean
+  hideOverflowItems: boolean
+
   scale: number
   opacity: number
 }
@@ -14,9 +17,10 @@ export interface SettingsDict {
 const defaultSettings:SettingsDict = {
   theme: "light",
   side: "right",
-  attached: true,
   collapsed: "auto",
+  attached: true,
   titleMarquee: true,
+  hideOverflowItems: false,
   scale: 1,
   opacity: 3,
 }
