@@ -21,5 +21,12 @@ export default {
     2: "中",
     3: "大",
   },
+  opacity: "不透明度",
+  opacityOptions: {
+    0: "30%",
+    1: "50%",
+    2: "75%",
+    3: "100%",
+  },
   options,
 }

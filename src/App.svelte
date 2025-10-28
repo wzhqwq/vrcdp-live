@@ -9,6 +9,8 @@
   import { FiArrowRight } from "svelte-icons-pack/fi"
   import { Playlist } from "./entities/playlist.svelte"
 
+  const opacityClasses = ["opacity-30", "opacity-50", "opacity-75", "opacity-100"]
+
   let liveMode = $state(false)
   $effect(() => {
     if (connectionState.connected) {
@@ -59,6 +61,7 @@
               ? "w-full"
               : "relative overflow-hidden w-96 border-stone-300 dark:border-stone-700",
             liveMode ? "" : $settings.side == "left" ? "border-l" : "border-r",
+            opacityClasses[$settings.opacity],
           ]}
           use:resize={{ callback: handleResize, throttle: 300 }}
         >
