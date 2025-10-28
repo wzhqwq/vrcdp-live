@@ -1,4 +1,5 @@
 <script lang="ts">
+  import i18n from "../../i18n/zh-cn"
   let { options, value = $bindable(), disabled = false } = $props()
 </script>
 
@@ -12,7 +13,7 @@
       }}
       {disabled}
     >
-      {option}
+      {i18n.options[option]}
     </button>
   {/each}
 </div>
