@@ -4,9 +4,10 @@
   import { settings } from "./api/settings.svelte"
   import { checkInLive } from "./api/ua"
   import Connection from "./components/Connection.svelte"
-  import Playlist from "./components/playlist/Playlist.svelte"
+  import PlaylistView from "./components/playlist/PlaylistView.svelte"
   import Settings from "./components/settings/Settings.svelte"
   import { FiArrowRight } from "svelte-icons-pack/fi"
+  import { Playlist } from "./entities/playlist.svelte"
 
   let liveMode = $state(false)
   $effect(() => {
@@ -16,6 +17,16 @@
       })
     }
   })
+
+  let currentPlaylist = $state<Playlist | undefined>()
+  $effect(() => {
+    currentPlaylist = new Playlist()
+    return () => {
+      currentPlaylist?.destroy()
+      currentPlaylist = undefined
+    }
+  })
+
 </script>
 
 <main class={$settings.theme}>
@@ -40,17 +51,20 @@
           {/if}
         </div>
       {/if}
-      <div
-        class={[
-          "scale-level-" + $settings.scale,
-          liveMode
-            ? "w-full"
-            : "relative overflow-hidden w-96 border-stone-300 dark:border-stone-700",
-          liveMode ? "" : $settings.side == "left" ? "border-l" : "border-r",
-        ]}
-      >
-        <Playlist />
-      </div>
+      {#if currentPlaylist}
+        <div
+          class={[
+            "scale-level-" + $settings.scale,
+            liveMode
+              ? "w-full"
+              : "relative overflow-hidden w-96 border-stone-300 dark:border-stone-700",
+            liveMode ? "" : $settings.side == "left" ? "border-l" : "border-r",
+          ]}
+          use:resize={{ callback: handleResize, throttle: 300 }}
+        >
+          <PlaylistView playlist={currentPlaylist} />
+        </div>
+      {/if}
     </div>
   </div>
 </main>
