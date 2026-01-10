@@ -19,15 +19,13 @@ export class PreloadedSong {
   }
 
   infoUpdated(keys?: (keyof PreloadedSongInfo)[]) {
-    let expansionChanged = false
-
     if (!keys || keys.includes("timePassed")) {
-      this.startingTime = Date.now() - this.info.timePassed
+      this.startingTime =
+        this.info.playStatus == "sync_playing" ? Date.now() - this.info.timePassed : 0
     }
     if (!keys || keys.includes("playStatus")) {
-      if (!this.playing && this.info.playStatus === "playing") {
+      if (!this.playing && this.info.playStatus.includes("playing")) {
         this.setPlaying()
-        expansionChanged = true
       } else if (this.playing && this.info.playStatus === "ended") {
         this.setEnded()
       }
@@ -42,15 +40,13 @@ export class PreloadedSong {
     if (!keys || keys.includes("group")) {
       this.group = this.info.group
     }
-
-    return expansionChanged
   }
 
   public removeFromList() {}
 
   public syncInfo(info: Partial<PreloadedSongInfo>) {
     this.info = { ...this.info, ...info }
-    return this.infoUpdated(Object.keys(info) as (keyof PreloadedSongInfo)[])
+    this.infoUpdated(Object.keys(info) as (keyof PreloadedSongInfo)[])
   }
 
   public getThumbnail() {

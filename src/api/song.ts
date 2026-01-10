@@ -8,7 +8,7 @@ export interface PreloadedSongInfo {
   group: string
 
   downloadStatus: "initial" | "requesting" | "pending" | "downloading" | "downloaded" | "failed"
-  playStatus: "queued" | "playing" | "ended"
+  playStatus: "queued" | "playing" | "sync_playing" | "ended"
 
   duration: number
   timePassed: number

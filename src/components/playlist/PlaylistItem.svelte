@@ -84,7 +84,7 @@
     </div>
     {#if !collapsed}
       <div class="text-label" transition:slide={{ duration: 300 }}>
-        {#if song.playing}
+        {#if song.playing && song.startingTime > 0}
           <div class="-mx-2" transition:slide={{ duration: 300 }}>
             <PlayProgress {song} />
           </div>
