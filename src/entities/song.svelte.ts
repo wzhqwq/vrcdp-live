@@ -89,7 +89,7 @@ export class PreloadedSong {
   }
 
   get timePassed() {
-    return this.info.playStatus == "queued" ? 0 : Date.now() - this.startingTime
+    return this.info.playStatus == "sync_playing" ? Math.max(0, Date.now() - this.startingTime) : 0
   }
 
   public msToEnd() {
