@@ -6,11 +6,12 @@
   import Title from "../song/Title.svelte"
   import PlayProgress from "./PlayProgress.svelte"
 
+  const opacityClasses = ["opacity-30", "opacity-50", "opacity-80", "opacity-100"]
+
   interface PlaylistItemProps {
     song: PreloadedSong
-    halfVisible: boolean
   }
-  let { song, halfVisible }: PlaylistItemProps = $props()
+  let { song }: PlaylistItemProps = $props()
 
   let thumbnailLoaded = $state(false)
 
@@ -28,7 +29,7 @@
         ? $settings.side == "left"
           ? "rounded-r-md"
           : "rounded-l-md"
-        : "rounded-lg"
+        : "rounded-lg",
   )
 </script>
 
@@ -37,7 +38,7 @@
     "flex transition-[gap,transform,margin,opacity] duration-300",
     { "flex-row-reverse": $settings.side == "left" },
     collapsed ? "gap-0" : "gap-1",
-    halfVisible ? "opacity-70 -translate-y-full " + ($settings.attached ? "ml-2" : "mx-2") : "",
+    opacityClasses[collapsed ? $settings.opacity : $settings.expandedOpacity],
   ]}
 >
   {#if song.label != ""}

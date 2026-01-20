@@ -16,18 +16,9 @@ export default {
   titleMarquee: "标题溢出时跑马灯",
   hideOverflowItems: "隐藏或堆叠溢出歌曲",
   scale: "UI大小",
-  scaleOptions: {
-    0: "极小",
-    1: "正常",
-    2: "中",
-    3: "大",
-  },
+  scaleOptions: ["极小", "正常", "中", "大"],
   opacity: "不透明度",
-  opacityOptions: {
-    0: "30%",
-    1: "50%",
-    2: "75%",
-    3: "100%",
-  },
+  expandedOpacity: "不透明度（未折叠）",
+  opacityOptions: ["30%", "50%", "80%", "100%"],
   options,
 }

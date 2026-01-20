@@ -24,6 +24,12 @@ export abstract class WSSession {
       return
     }
     this.isSyncingFromServer = true
+    // migration
+    // opacity
+    if (this.settingsOnServer.expandedOpacity === undefined && this.settingsOnServer.opacity !== undefined) {
+      this.settingsOnServer.expandedOpacity = this.settingsOnServer.opacity
+    }
+
     settings.update(s => ({ ...s, ...this.settingsOnServer }))
     this.isSyncingFromServer = false
   }

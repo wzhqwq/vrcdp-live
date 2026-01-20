@@ -29,20 +29,27 @@
   <div class="range-ticks">
     <input type="range" list="scales" min="0" max="3" step="1" bind:value={$settings.scale} />
     <datalist id="scales">
-      <option value="0" label={i18n.scaleOptions[0]}></option>
-      <option value="1" label={i18n.scaleOptions[1]}></option>
-      <option value="2" label={i18n.scaleOptions[2]}></option>
-      <option value="3" label={i18n.scaleOptions[3]}></option>
+      {#each i18n.scaleOptions as option, index}
+        <option value={index} label={option}></option>
+      {/each}
     </datalist>
   </div>
   <span class="text-sm">{i18n.opacity}</span>
   <div class="range-ticks">
     <input type="range" list="opacities" min="0" max="3" step="1" bind:value={$settings.opacity} />
     <datalist id="opacities">
-      <option value="0" label={i18n.opacityOptions[0]}></option>
-      <option value="1" label={i18n.opacityOptions[1]}></option>
-      <option value="2" label={i18n.opacityOptions[2]}></option>
-      <option value="3" label={i18n.opacityOptions[3]}></option>
+      {#each i18n.opacityOptions as option, index}
+        <option value={index} label={option}></option>
+      {/each}
+    </datalist>
+  </div>
+  <span class="text-sm w-20">{i18n.expandedOpacity}</span>
+  <div class="range-ticks">
+    <input type="range" list="opacities" min="0" max="3" step="1" bind:value={$settings.expandedOpacity} />
+    <datalist id="opacities">
+      {#each i18n.opacityOptions as option, index}
+        <option value={index} label={option}></option>
+      {/each}
     </datalist>
   </div>
 </HoverDetach>

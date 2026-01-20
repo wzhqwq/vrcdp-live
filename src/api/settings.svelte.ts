@@ -12,6 +12,7 @@ export interface SettingsDict {
 
   scale: number
   opacity: number
+  expandedOpacity: number
 }
 
 const defaultSettings:SettingsDict = {
@@ -23,6 +24,7 @@ const defaultSettings:SettingsDict = {
   hideOverflowItems: false,
   scale: 1,
   opacity: 3,
+  expandedOpacity: 3,
 }
 
 export const settings = writable<SettingsDict>(defaultSettings)

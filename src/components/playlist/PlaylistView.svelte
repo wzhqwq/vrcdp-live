@@ -20,7 +20,11 @@
 
   let flyParams = $derived({ duration: 300, x: $settings.side == "right" ? "100%" : "-100%" })
   let visibleItems = $derived(
-    playlist.current.slice(0, $settings.hideOverflowItems ? playlist.visibleCount : 100)
+    playlist.current.slice(0, $settings.hideOverflowItems ? playlist.visibleCount : 100),
+  )
+
+  let halfVisibleClass = $derived(
+    "opacity-70 -translate-y-full " + ($settings.attached ? "ml-2" : "mx-2"),
   )
 </script>
 
@@ -30,12 +34,12 @@
       <div
         animate:flip={{ duration: 300, delay: 200 }}
         transition:fly={flyParams}
-        class="not-first-of-type:pt-2 overflow-clip"
+        class={[
+          "not-first-of-type:pt-2 overflow-clip",
+          $settings.hideOverflowItems && i == playlist.visibleCount - 1 ? halfVisibleClass : "",
+        ]}
       >
-        <PlaylistItem
-          {song}
-          halfVisible={$settings.hideOverflowItems && i == playlist.visibleCount - 1}
-        />
+        <PlaylistItem {song} />
       </div>
     {/each}
   </div>
