@@ -1,5 +1,9 @@
 import { getThumbnailUrl, type PreloadedSongInfo } from "../api/song"
 
+export interface SongAnimationData {
+  hidden: boolean
+}
+
 export class PreloadedSong {
   expanded = $state<boolean>(false)
   downloadProgress = $state<number>(0)
@@ -11,11 +15,15 @@ export class PreloadedSong {
   title = $state<string>("")
   group = $state<string>("")
 
+  animationData: SongAnimationData
+
   onSongEnded?: () => void
 
   constructor(public info: PreloadedSongInfo) {
-    this.info = info
     this.infoUpdated()
+    this.animationData = {
+      hidden: false,
+    }
   }
 
   infoUpdated(keys?: (keyof PreloadedSongInfo)[]) {
@@ -25,14 +33,21 @@ export class PreloadedSong {
     }
     if (!keys || keys.includes("playStatus")) {
       if (!this.playing && this.info.playStatus.includes("playing")) {
-        this.setPlaying()
+        if (this.info.timePassed < 0) {
+          this.setUpcoming()
+          setTimeout(() => {
+            this.setPlaying()
+          }, -this.info.timePassed)
+        } else {
+          this.setPlaying()
+        }
       } else if (this.playing && this.info.playStatus === "ended") {
         this.setEnded()
       }
     }
     if (!keys || keys.includes("downloadProgress") || keys.includes("downloadStatus")) {
       this.downloadProgress =
-        this.info.downloadStatus === "downloaded" ? 100 : this.info.downloadProgress ?? 0
+        this.info.downloadStatus === "downloaded" ? 100 : (this.info.downloadProgress ?? 0)
     }
     if (!keys || keys.includes("title")) {
       this.title = this.info.title

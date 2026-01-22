@@ -25,7 +25,7 @@ export class Playlist extends WSSession {
         const preloadedSong = new PreloadedSong(song)
         this.activeSongs.set(preloadedSong.info.id, preloadedSong)
         return preloadedSong
-      })
+      }),
     )
   }
 
@@ -80,6 +80,9 @@ export class Playlist extends WSSession {
   }
   updateVisibleCount() {
     this.visibleCount = this.calculateVisibleCount()
+    this.current.slice(this.visibleCount).forEach(song => {
+      song.animationData.hidden = true
+    })
   }
 
   calculateVisibleCount() {

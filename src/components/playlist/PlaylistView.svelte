@@ -1,8 +1,7 @@
 <script lang="ts">
-  import { flip } from "svelte/animate"
+  import { flip, flyIn, flyOut } from "../../animation/flip_and_fly"
   import { Playlist } from "../../entities/playlist.svelte"
   import PlaylistItem from "./PlaylistItem.svelte"
-  import { fly } from "svelte/transition"
   import { settings } from "../../api/settings.svelte"
 
   interface PlaylistProps {
@@ -18,7 +17,6 @@
     if ($settings.hideOverflowItems) playlist.updateSettings($settings.scale, $settings.collapsed)
   })
 
-  let flyParams = $derived({ duration: 300, x: $settings.side == "right" ? "100%" : "-100%" })
   let visibleItems = $derived(
     playlist.current.slice(0, $settings.hideOverflowItems ? playlist.visibleCount : 100)
   )
@@ -28,8 +26,9 @@
   <div class="flex flex-col">
     {#each visibleItems as song, i (song.info.id)}
       <div
-        animate:flip={{ duration: 300, delay: 200 }}
-        transition:fly={flyParams}
+        animate:flip
+        in:flyIn={{ side: $settings.side, data: song.animationData }}
+        out:flyOut={{ side: $settings.side, data: song.animationData }}
         class="not-first-of-type:pt-2 overflow-clip"
       >
         <PlaylistItem

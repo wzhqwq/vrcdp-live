@@ -40,7 +40,7 @@
 <div
   class={[
     "transition-[translate,margin,opacity] duration-300",
-    halfVisible ? "opacity-70 -translate-y-full " + halfVisibleMarginClass : "",
+    halfVisible ? "opacity-70 -translate-y-full " + halfVisibleMarginClass : "delay-100",
   ]}
 >
   <div
